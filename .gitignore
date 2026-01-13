@@ -1,0 +1,26 @@
+# exclude everything except directory
+
+.DS_Store
+.amazonq
+.cursor
+.git
+.vscode
+.lingma
+.marscode
+.phpunit.cache
+.php-cs-fixer.php
+GEMINI.md
+composer.lock
+vendor
+local-dev
+dev.js
+node_modules
+package.json
+package-lock.json
+nodemon.json
+scripts
+source/*
+!source/data/
+source/data/ai.md
+coverage
+features

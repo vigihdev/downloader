@@ -1,0 +1,24 @@
+name: Tests
+
+on: [push, pull_request]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.1"
+
+      - name: Configure private repo auth
+        run: composer config http-basic.satis.id "$SATIS_LOCAL_USER" "$SATIS_LOCAL_TOKEN"
+        env:
+          SATIS_LOCAL_USER: ${{ secrets.SATIS_LOCAL_USER }}
+          SATIS_LOCAL_TOKEN: ${{ secrets.SATIS_LOCAL_TOKEN }}
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+      - run: composer install --no-interaction --prefer-dist
+      - run: composer test
