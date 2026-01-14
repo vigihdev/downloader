@@ -32,6 +32,9 @@ abstract class BaseDownloader implements FileDownloaderInterface
     {
         if (is_dir($destination)) {
             $filename = basename(parse_url($url, PHP_URL_PATH));
+            if (pathinfo($filename, PATHINFO_EXTENSION) === '') {
+                $filename = $filename . '.jpg';
+            }
             $destination = rtrim($destination, '/') . '/' . $filename;
         }
         return $destination;
