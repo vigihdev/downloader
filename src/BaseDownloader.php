@@ -31,12 +31,15 @@ abstract class BaseDownloader implements FileDownloaderInterface
     protected function resolveDestination(string $url, string $destination): string
     {
         if (is_dir($destination)) {
+
             $filename = basename(parse_url($url, PHP_URL_PATH));
             if (pathinfo($filename, PATHINFO_EXTENSION) === '') {
                 $filename = $filename . '.jpg';
             }
+
             $destination = rtrim($destination, '/') . '/' . $filename;
         }
+
         return $destination;
     }
 

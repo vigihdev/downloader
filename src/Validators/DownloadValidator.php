@@ -35,10 +35,15 @@ final class DownloadValidator
 
     public function mustBeValidDestination(): self
     {
-        $directory = dirname($this->destination);
+
+        $directory = $this->destination;
+        if (pathinfo($directory, PATHINFO_EXTENSION) !== '') {
+            $directory = dirname($directory);
+        }
 
         DirectoryValidator::validate($directory)
-            ->ensureExists()
+            ->mustExist()
+            ->mustBeReadable()
             ->mustBeWritable();
 
         return $this;
