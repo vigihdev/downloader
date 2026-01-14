@@ -76,7 +76,7 @@ final class GuzzleDownloader extends BaseDownloader
                 error: $e->getMessage(),
                 metadata: new MetadataDownload(
                     url: $url,
-                    originalSize: (int) $contentLength,
+                    originalSize: 0,
                     downloadTime: date('Y-m-d H:i:s'),
                     method: self::METHOD_NAME,
                 ),
