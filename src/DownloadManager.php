@@ -14,6 +14,14 @@ final class DownloadManager
 
     private array $defaultOptions = [];
 
+    /**
+     * Download multiple images from URLs to directory
+     * 
+     * @param array $urls Array of image URLs to download
+     * @param string $directory Directory to save downloaded images
+     * @param array $options Additional options for downloader
+     * @return DownloadBatchResult Batch download result object
+     */
     public static function downloadImages(array $urls, string $directory, array $options = []): DownloadBatchResult
     {
         $results = [];
@@ -41,6 +49,14 @@ final class DownloadManager
         );
     }
 
+    /**
+     * Download image from URL to destination
+     * 
+     * @param string $url URL to download
+     * @param string $destination Destination path
+     * @param array $options Additional options for downloader
+     * @return DownloadResult Download result object
+     */
     public static function downloadImage(string $url, string $destination, array $options = []): DownloadResult
     {
         $self = new self();
@@ -58,6 +74,13 @@ final class DownloadManager
         $this->defaultOptions = $options;
     }
 
+    /**
+     * Validate if URL points to an image
+     * 
+     * @param string $url URL to validate
+     * @param array $options Additional options for downloader
+     * @return bool True if URL points to an image, false otherwise
+     */
     public function validateImageUrl(string $url, array $options = []): bool
     {
         $fileInfo = $this->downloader->getFileInfo($url, $options);
@@ -69,6 +92,11 @@ final class DownloadManager
         return $fileInfo->getMimeType() && str_starts_with($fileInfo->getMimeType(), 'image/');
     }
 
+    /**
+     * Create default downloader based on available extensions
+     * 
+     * @return FileDownloaderInterface Default downloader instance
+     */
     private function createDefaultDownloader(): FileDownloaderInterface
     {
         // Prefer curl, fallback to guzzle, then file_get_contents

@@ -25,6 +25,14 @@ final class NativeDownloader extends BaseDownloader
         $this->options = array_merge($this->defaultOptions, $options);
     }
 
+    /**
+     * Download file from URL to destination
+     * 
+     * @param string $url URL to download
+     * @param string $destination Destination path
+     * @param array $options Additional options for downloader
+     * @return DownloadResult Download result object
+     */
     public function download(string $url, string $destination, array $options = []): DownloadResult
     {
         $options = array_merge($this->options, $options);
@@ -107,6 +115,13 @@ final class NativeDownloader extends BaseDownloader
         }
     }
 
+    /**
+     * Check if URL is accessible
+     * 
+     * @param string $url URL to check
+     * @param array $options Additional options for downloader
+     * @return bool True if URL is accessible, false otherwise
+     */
     public function isAccessible(string $url, array $options = []): bool
     {
         $options = array_merge($this->options, $options);
@@ -132,6 +147,13 @@ final class NativeDownloader extends BaseDownloader
         }
     }
 
+    /**
+     * Get file information from URL
+     * 
+     * @param string $url URL to check
+     * @param array $options Additional options for downloader
+     * @return FileInfo File information object
+     */
     public function getFileInfo(string $url, array $options = []): FileInfo
     {
         $options = array_merge($this->options, $options);
@@ -207,6 +229,13 @@ final class NativeDownloader extends BaseDownloader
         return stream_context_create($contextOptions);
     }
 
+    /**
+     * Download file to temporary location
+     * 
+     * @param string $url URL to download
+     * @param resource $context Stream context resource
+     * @return string Path to temporary file
+     */
     private function downloadToTemp(string $url, $context): string
     {
         $tempFile = $this->tempManager->getPath($this->fileInfo->getFilename());
@@ -226,6 +255,12 @@ final class NativeDownloader extends BaseDownloader
         return $tempFile;
     }
 
+    /**
+     * Extract Content-Length header value
+     * 
+     * @param array $headers Array of HTTP headers
+     * @return ?int Content-Length value or null if not found
+     */
     private function extractContentLength(array $headers): ?int
     {
 
@@ -238,6 +273,12 @@ final class NativeDownloader extends BaseDownloader
         return $contentLength ? (int) $contentLength : null;
     }
 
+    /**
+     * Extract Content-Type header value
+     * 
+     * @param array $headers Array of HTTP headers
+     * @return ?string Content-Type value or null if not found
+     */
     private function extractContentType(array $headers): ?string
     {
 
@@ -254,6 +295,12 @@ final class NativeDownloader extends BaseDownloader
         return $contentType ? trim($contentType) : null;
     }
 
+    /**
+     * Extract Last-Modified header value
+     * 
+     * @param array $headers Array of HTTP headers
+     * @return ?string Last-Modified value or null if not found
+     */
     private function extractLastModified(array $headers): ?string
     {
         $lastModified = array_filter($headers, fn($key) => is_string($key) && strtolower($key) === 'last-modified', ARRAY_FILTER_USE_KEY);
@@ -265,6 +312,13 @@ final class NativeDownloader extends BaseDownloader
         return $lastModified ? trim($lastModified) : null;
     }
 
+    /**
+     * Extract filename from Content-Disposition header or URL
+     * 
+     * @param array $headers Array of HTTP headers
+     * @param string $url URL to extract filename from
+     * @return ?string Filename or null if not found
+     */
     private function extractFilename(array $headers, string $url): ?string
     {
         // Try Content-Disposition header

@@ -37,6 +37,14 @@ final class GuzzleDownloader extends BaseDownloader
         $this->client = new Client(array_merge($this->defaultConfig, $config));
     }
 
+    /**
+     * Download file from URL to destination
+     * 
+     * @param string $url URL to download
+     * @param string $destination Destination path
+     * @param array $options Additional options for Guzzle
+     * @return DownloadResult Download result object
+     */
     public function download(string $url, string $destination, array $options = []): DownloadResult
     {
         try {
@@ -84,6 +92,13 @@ final class GuzzleDownloader extends BaseDownloader
         }
     }
 
+    /**
+     * Check if URL is accessible
+     * 
+     * @param string $url URL to check
+     * @param array $options Additional options for Guzzle
+     * @return bool True if URL is accessible, false otherwise
+     */
     public function isAccessible(string $url, array $options = []): bool
     {
         try {
@@ -94,6 +109,13 @@ final class GuzzleDownloader extends BaseDownloader
         }
     }
 
+    /**
+     * Get file information from URL
+     * 
+     * @param string $url URL to check
+     * @param array $options Additional options for Guzzle
+     * @return FileInfo File information object
+     */
     public function getFileInfo(string $url, array $options = []): FileInfo
     {
         try {
@@ -118,6 +140,13 @@ final class GuzzleDownloader extends BaseDownloader
         }
     }
 
+    /**
+     * Extract filename from Content-Disposition header
+     * 
+     * @param array $headers HTTP headers array
+     * @param string $url URL to extract filename from
+     * @return ?string Extracted filename or null if not found
+     */
     private function extractFilename(array $headers, string $url): ?string
     {
         // Implementation similar to CurlDownloader

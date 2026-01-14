@@ -24,6 +24,14 @@ final class CurlDownloader extends BaseDownloader
         }
     }
 
+    /**
+     * Download file from URL to destination
+     * 
+     * @param string $url URL to download
+     * @param string $destination Destination path
+     * @param array $options Additional options for cURL
+     * @return DownloadResult Download result object
+     */
     public function download(string $url, string $destination, array $options = []): DownloadResult
     {
 
@@ -102,6 +110,13 @@ final class CurlDownloader extends BaseDownloader
         }
     }
 
+    /**
+     * Check if URL is accessible
+     * 
+     * @param string $url URL to check
+     * @param array $options Additional options for cURL
+     * @return bool True if URL is accessible, false otherwise
+     */
     public function isAccessible(string $url, array $options = []): bool
     {
 
@@ -120,6 +135,13 @@ final class CurlDownloader extends BaseDownloader
         return $result !== false && $httpCode >= 200 && $httpCode < 400;
     }
 
+    /**
+     * Get file information from URL
+     * 
+     * @param string $url URL to get file info
+     * @param array $options Additional options for cURL
+     * @return FileInfo File information object
+     */
     public function getFileInfo(string $url, array $options = []): FileInfo
     {
         if ($this->curlManager === null) {
