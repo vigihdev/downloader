@@ -20,7 +20,7 @@ package-lock.json
 nodemon.json
 scripts
 source/*
-!source/data/
+# !source/data/
 source/data/ai.md
 coverage
 features
