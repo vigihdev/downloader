@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Vigihdev\Downloader\Exceptions;
 
-final class UriException extends BaseDownloaderException
+class UriException extends AbstractDownloaderException
 {
 
     public static function notFound(string $uri, int $statusCode = 0): self

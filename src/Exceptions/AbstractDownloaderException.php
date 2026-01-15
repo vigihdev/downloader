@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Vigihdev\Downloader\Exceptions;
 
-abstract class BaseDownloaderException extends \Exception
+abstract class AbstractDownloaderException extends \Exception implements DownloaderExceptionInterface
 {
 
     protected array $context = [];

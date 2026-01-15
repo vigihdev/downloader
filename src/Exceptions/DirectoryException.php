@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Vigihdev\Downloader\Exceptions;
 
-final class DirectoryException extends BaseDownloaderException
+class DirectoryException extends AbstractDownloaderException
 {
 
 

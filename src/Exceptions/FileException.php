@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Vigihdev\Downloader\Exceptions;
 
-final class FileException extends BaseDownloaderException
+class FileException extends AbstractDownloaderException
 {
 
     public static function exist(string $filepath): self
@@ -176,13 +176,15 @@ final class FileException extends BaseDownloaderException
         );
     }
 
-    public static function fileTooLarge(string $filepath, int $maxSize, int $actualSize): self
+    public static function tooLarge(string $filepath, int $maxSize, int $actualSize, string $unit = 'bytes'): self
     {
         return new self(
             message: sprintf(
-                'File size exceeds maximum allowed: %s (max %s)',
+                'File size exceeds maximum allowed: %s %s (max %s %s)',
                 $actualSize,
-                $maxSize
+                $unit,
+                $maxSize,
+                $unit
             ),
             context: [
                 'filepath' => $filepath,
