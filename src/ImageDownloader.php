@@ -79,20 +79,4 @@ final class ImageDownloader implements ImageDownloaderInterface
             ),
         );
     }
-
-    private function errorResult(Throwable $e): DownloadResult
-    {
-        return new DownloadResult(
-            success: false,
-            destination: $this->provider->getDestination(),
-            size: 0,
-            mimeType: '',
-            metadata: new MetadataDownload(
-                url: $this->provider->getUrl(),
-                originalSize: 0,
-                downloadTime: date('Y-m-d H:i:s'),
-                method: get_class($this->provider),
-            ),
-        );
-    }
 }
