@@ -41,6 +41,8 @@ final class UnsplashProvider extends AbstractProvider
         private string $destination,
         private readonly int $width = 640,
         private readonly int $height = 480,
+        private readonly bool $allowOverwrite = false,
+        private readonly int $maxFileSize = 1024 * 1024 * 4, // 4 MB
     ) {
         $this->destination = $this->resolveDestination($destination);
     }
@@ -59,5 +61,15 @@ final class UnsplashProvider extends AbstractProvider
     {
         $randomId = $this->ids[array_rand($this->ids)];
         return "https://images.unsplash.com/photo-{$randomId}?w={$this->width}&h={$this->height}&fit=crop";
+    }
+
+    public function allowOverwrite(): bool
+    {
+        return $this->allowOverwrite;
+    }
+
+    public function maxFileSize(): int
+    {
+        return $this->maxFileSize;
     }
 }

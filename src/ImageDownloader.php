@@ -30,10 +30,15 @@ final class ImageDownloader implements ImageDownloaderInterface
     {
         try {
             $validator = DownloadValidator::validate($this->provider->getUrl(), $this->provider->getDestination());
-            $validator->mustBeValidDestination()->mustNotExistFileDestination();
+            $validator->mustBeValidDestination();
+
+            if (!$this->provider->allowOverwrite()) {
+                $validator->mustNotExistFileDestination();
+            }
 
             $header = $this->client->getHeaders($this->provider->getUrl());
-            $validator->mustBeImageMimeType($header->contentType());
+            $validator->mustBeImageMimeType($header->contentType())
+                ->mustNotExceedSize($header->contentLength(), $this->provider->maxFileSize());
 
             $content = $this->client->get($this->provider->getUrl());
             $this->fs->dumpFile($this->provider->getDestination(), $content);

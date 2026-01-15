@@ -11,6 +11,8 @@ final class NativeUrlProvider extends AbstractProvider
     public function __construct(
         private string $destination,
         private readonly string $url,
+        private readonly bool $allowOverwrite = false,
+        private readonly int $maxFileSize = 1024 * 1024 * 4, // 4 MB
     ) {
         $this->destination = $this->resolveDestination($destination);
     }
@@ -28,5 +30,15 @@ final class NativeUrlProvider extends AbstractProvider
     public function getDestination(): string
     {
         return $this->destination;
+    }
+
+    public function allowOverwrite(): bool
+    {
+        return $this->allowOverwrite;
+    }
+
+    public function maxFileSize(): int
+    {
+        return $this->maxFileSize;
     }
 }
