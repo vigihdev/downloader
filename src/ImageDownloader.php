@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Vigihdev\Downloader;
 
+use DateTime;
+use DateTimeImmutable;
+use DateTimeZone;
 use SplFileInfo;
 use Throwable;
 use Symfony\Component\Filesystem\Filesystem;
@@ -18,7 +21,8 @@ final class ImageDownloader implements ImageDownloaderInterface
     private ?Filesystem $fs = null;
     public function __construct(
         private readonly ProviderInterface $provider,
-        private readonly HttpClientInterface $client
+        private readonly HttpClientInterface $client,
+        private readonly bool $useHeaderHint = false,
     ) {
 
         if ($this->fs === null) {
@@ -36,16 +40,28 @@ final class ImageDownloader implements ImageDownloaderInterface
                 $validator->mustNotExistFileDestination();
             }
 
-            $header = $this->client->getHeaders($this->provider->getUrl());
-            $validator->mustBeImageMimeType($header->contentType())
-                ->mustNotExceedSize($header->contentLength(), $this->provider->maxFileSize());
+            if ($this->useHeaderHint) {
+                $header = $this->client->getHeaders($this->provider->getUrl());
+                $validator->mustBeImageMimeType($header->contentType())
+                    ->mustNotExceedSize($header->contentLength(), $this->provider->maxFileSize());
+            }
 
             $content = $this->client->get($this->provider->getUrl());
             $this->fs->dumpFile($this->provider->getDestination(), $content);
             $validator->mustExistFileDestination();
 
+            if (!$this->useHeaderHint) {
+                $validator->mustNotExceedSize(strlen($content), $this->provider->maxFileSize())
+                    ->mustBeImageMimeType(mime_content_type($this->provider->getDestination()));
+            }
+
             return $this->succesResult();
         } catch (\Throwable | DownloaderExceptionInterface $e) {
+
+            if (is_file($this->provider->getDestination())) {
+                unlink($this->provider->getDestination());
+            }
+
             $context = method_exists($e, 'getContext') ? $e->getContext() : ['url' => $this->provider->getUrl()];
             $solutions = method_exists($e, 'getSolutions') ? $e->getSolutions() : [];
             throw new DownloadException(
@@ -78,5 +94,11 @@ final class ImageDownloader implements ImageDownloaderInterface
                 method: get_class($this->provider),
             ),
         );
+    }
+
+    private function dateNow(): string
+    {
+        $date = new DateTime('now', new DateTimeZone('Asia/Jakarta'));
+        return $date->format('Y-m-d H:i:s');
     }
 }

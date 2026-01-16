@@ -101,9 +101,9 @@ final class DownloadValidator
         return $this;
     }
 
-    public function mustBeImageMimeType(string $contentType): self
+    public function mustBeImageMimeType(?string $contentType): self
     {
-        if (strpos($contentType, 'image/') !== 0) {
+        if (!is_string($contentType) || strpos($contentType, 'image/') !== 0) {
             throw DownloadException::invalidMimeType($this->url, $contentType);
         }
         return $this;
