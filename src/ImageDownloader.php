@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Vigihdev\Downloader;
 
 use DateTime;
-use DateTimeImmutable;
 use DateTimeZone;
 use SplFileInfo;
 use Throwable;
