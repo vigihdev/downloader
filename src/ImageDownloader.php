@@ -58,7 +58,9 @@ final class ImageDownloader implements ImageDownloaderInterface
         } catch (\Throwable | DownloaderExceptionInterface $e) {
 
             if (is_file($this->provider->getDestination())) {
-                unlink($this->provider->getDestination());
+                if ($this->provider->allowOverwrite()) {
+                    unlink($this->provider->getDestination());
+                }
             }
 
             $context = method_exists($e, 'getContext') ? $e->getContext() : ['url' => $this->provider->getUrl()];
