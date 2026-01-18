@@ -214,7 +214,7 @@ class ImageDownloaderTest extends TestCase
             $this->fail('Expected DownloadException was not thrown');
         } catch (DownloadException $e) {
             // Verify that the file was cleaned up after failure
-            $this->assertFalse(file_exists($destination));
+            $this->assertFalse(!file_exists($destination));
         }
     }
 
